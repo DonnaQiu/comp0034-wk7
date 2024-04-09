@@ -1,6 +1,14 @@
 # Version after the final activity in week 6
-from dash import Dash, html
+from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+
+# Add an import to import the line_chart function
+from paralympics_flask.figures import line_chart, scatter_geo
+# Create the scatter map
+map = scatter_geo()
+
+# Create the Plotly Express line chart object, e.g. to show number of sports
+line = line_chart("sports")
 
 # Variable that contains the external_stylesheet to use, in this case Bootstrap styling from dash bootstrap
 # components (dbc)
@@ -85,16 +93,17 @@ row_two = dbc.Row([
 
 row_three = dbc.Row([
     dbc.Col(children=[
+        # Add this line:
+        dcc.Graph(id="line", figure=line),
+        # Delete this line:
         html.Img(src=app.get_asset_url('line-chart-placeholder.png'), className="img-fluid"),
-    ], width=4),
-    dbc.Col(children=[
-        html.Img(src=app.get_asset_url('bar-chart-placeholder.png'), className="img-fluid"),
     ], width=4),
 ], align="start")
 
 row_four = dbc.Row([
     dbc.Col(children=[
-        html.Img(src=app.get_asset_url('map-placeholder.png'), className="img-fluid"),
+        dcc.Graph(id="map", figure=map)
+        # html.Img(src=app.get_asset_url('map-placeholder.png'), className="img-fluid"),
     ], width=8),
     dbc.Col(children=[
         card,
